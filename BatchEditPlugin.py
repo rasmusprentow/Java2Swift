@@ -9,7 +9,7 @@ class BatchEditCommand(sublime_plugin.TextCommand):
         self._edit = edit
         self._replace_all(u"interface ", r"protocol ")
         self._replace_all(u" implements ", r" : ")
-        # Interface method
+        # Interface method 
         self._replace_all(u"(\w*) (\w*)\(([\w, ]*)\);", r"func \2(\3) -> \1;")
         self._replace_all(u"public class", r"class")
         self._replace_all(u"public static final (String) (\S*)", r"static var \2 : \1")
