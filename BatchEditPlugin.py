@@ -10,17 +10,24 @@ class BatchEditCommand(sublime_plugin.TextCommand):
         self._replace_all(u"interface ", r"protocol ")
         self._replace_all(u" implements ", r" : ")
         # Interface method 
-        self._replace_all(u"(\w*) (\w*)\(([\w, ]*)\);", r"func \2(\3) -> \1;")
+        self._replace_all(u"(\w+) (\w+)\(([\w, ]*)\);", r"func \2(\3) -> \1;")
         self._replace_all(u"public class", r"class")
-        self._replace_all(u"public static final (String) (\S*)", r"static var \2 : \1")
+        self._replace_all(u"public static final (String|int) (\S*)", r"static var \2 : \1")
         self._replace_all(u"DateTime", r"NSDate")
-        self._replace_all(u"private (\w*) (\w*);", r"var \2 : \1")
-        self._replace_all(u"public (\w*)\(([\w, ]*)\) \{", r"func init(\2) {")
-        self._replace_all(u"public (\w*) (\w*)\(([\w, ]*)\) \{", r"func \2(\3) -> \1 {")
-        
+        self._replace_all(u"(private|protected) (\w*) (\w*);", r"var \3 : \2")
+        # Constroctor
+        self._replace_all(u"(public|private|protected) (\w*)\(([\w, ]*)\) \{", r"init(\3) {")
+        self._replace_all(u"(public|private|protected) (\w*) (\w*)\(([\w, ]*)\) \{", r"\1 func \3(\4) -> \2 {")
+        self._replace_all(u"\((\w+) (\w+)([\),])", r"(\2: \1\3")      
+        self._replace_all(u"public ", r"")      
+        self._replace_all(u"ParseObject", r"PFObject")      
+        self._replace_all(u"this", r"self")
+
+        # Remove void methods
+        self._replace_all(u"-> void", r"")
 
  
- 
+  
     def _get_file_content(self):
         return self.view.substr(sublime.Region(0, self.view.size()))
 
